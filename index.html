@@ -386,16 +386,16 @@
       }
 
       .subscription-section {
-        background: rgba(20, 10, 0, 0.6);
+        background: rgba(36, 136, 255, 0.1);
         border-radius: 10px;
         padding: 20px;
         margin: 25px 0;
-        border: 1px solid rgba(255, 107, 0, 0.3);
+        border: 1px solid #2488ff;
       }
 
       .subscription-header {
         text-align: center;
-        color: #ffde00;
+        color: #e6f2fa;
         margin-bottom: 15px;
         font-size: 1.3rem;
         text-transform: uppercase;
@@ -421,9 +421,14 @@
         transform: translateY(-5px);
       }
 
+      .requirement:hover,
+      .requirement:hover i {
+        color: #ff6b00;
+      }
+
       .requirement i {
         font-size: 2rem;
-        color: #ff6b00;
+        color: #2488ff;
         margin-bottom: 10px;
       }
 
@@ -1104,6 +1109,27 @@
             </div>
           </div>
         </div>
+
+        <div
+          class="subscription-section"
+          id="SubscriptionBox"
+          style="display: none"
+        >
+          <div class="subscription-header">
+            <i class="fas fa-lock"></i> SUBSCRIPTION REQUIRED
+          </div>
+          <p style="text-align: center; margin-bottom: 15px; color: #b7d4ec">
+            To generate sensitivity settings, please subscribe to our channels
+          </p>
+
+          <div class="subscription-requirements">
+            <div class="requirement" id="Youtube">
+              <i class="fab fa-youtube"></i>
+              <div class="requirement-text">Subscribe to @loadingpcff</div>
+            </div>
+          </div>
+        </div>
+
         <button class="generate-btn" id="generateBtn">
           <i class="fas fa-gear"></i> GENERATE SENSITIVITY
         </button>
@@ -1163,10 +1189,7 @@
         </div>
         <div class="tip-item">
           <h3><i class="fas fa-bullseye"></i> Sniper Aiming</h3>
-          <p>
-            Snipers should use lower sensitivity (25-45) for precise shots.
-            Enable gyroscope for micro-adjustments.
-          </p>
+          <p>Snipers should use lower sensitivity (25-45) for precise shots.</p>
         </div>
         <div class="tip-item">
           <h3><i class="fas fa-mobile-alt"></i> Device Optimization</h3>
@@ -2477,7 +2500,6 @@
       //const muteButton = document.getElementById("muteButton");
       const playstyleCards = document.querySelectorAll(".playstyle-card");
       let currentPlaystyle = "balanced";
-      var InstaFollow = false;
       var YoutubeSubscribe = false;
 
       // Playstyle selection
@@ -2518,6 +2540,10 @@
           model.innerHTML = '<option value="">Select a Model</option>';
         }
         if (brand && model) {
+          if (!YoutubeSubscribe) {
+            subBox.style.display = "block";
+            return;
+          } else subBox.style.display = "none";
           //let general , reddot, scope2x, scope4x , sniper , button;
 
           switch (currentPlaystyle) {
@@ -2611,26 +2637,28 @@ subBox.style.display = "none";
 */
 
       //Youtube Button Event listener
-      /* Youtube.addEventListener("click", function () {
-const time = Date.now();
-window.open(
-"https://youtube.com/@sk-tyson-esp?si=OBEhJecDTfVEQtjo",
-"_blank"
-);
+      Youtube.addEventListener("click", function () {
+        generateBtn.disabled = true;
+        const time = Date.now();
+        window.open(
+          "https://youtube.com/@loadingpcff?si=ms5LQbWar3fCMVjr",
+          "_blank"
+        );
 
-window.addEventListener("focus", function () {
-let returntime = Date.now();
-let timespent = (returntime - time) / 1000;
+        window.addEventListener("focus", function () {
+          let returntime = Date.now();
+          let timespent = (returntime - time) / 1000;
 
-if (timespent > 3) {
-if (InstaFollow) {
-generateBtn.disabled = false;
-subBox.style.display = "none";
-} else YoutubeSubscribe = true;
-} else YoutubeSubscribe = false;
-});
-});
-*/
+          if (timespent > 4) {
+            generateBtn.disabled = false;
+            subBox.style.display = "none";
+            YoutubeSubscribe = true;
+          } else {
+            generateBtn.disabled = false;
+            YoutubeSubscribe = false;
+          }
+        });
+      });
 
       // Play button click handler
       // playButton.addEventListener("click", function () {
