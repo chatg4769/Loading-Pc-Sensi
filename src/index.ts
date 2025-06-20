@@ -7,6 +7,11 @@ interface CloudflareBindings {
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
+app.use("*", async (c, next) => {
+  console.log(`Incoming request: ${c.req.url}`);
+  await next();
+});
+
 // API routes - handled first
 app.get("/message", (c) => c.text("Hello Hono!"));
 
