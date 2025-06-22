@@ -147,17 +147,15 @@
         height: 100%;
         z-index: -2;
         overflow: hidden;
+        background: #0a0d14;
       }
 
       #video-bg {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        min-width: 100%;
-        min-height: 100%;
-        width: auto;
-        height: auto;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         object-fit: cover;
         opacity: 0.5;
         transition: opacity 1s ease;
@@ -175,6 +173,17 @@
           rgba(18, 24, 38, 0.95) 100%
         );
         z-index: -1;
+      }
+
+      /* Fallback for IE */
+      .ie-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect width="100%" height="100%" fill="%230a0d14"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="%232488ff" stroke-width="2" stroke-opacity="0.1"/></svg>');
+        z-index: -3;
       }
 
       .preloader {
@@ -243,19 +252,6 @@
       .play-overlay.hidden {
         opacity: 0;
         pointer-events: none;
-      }
-
-      .play-btn {
-        background: linear-gradient(45deg, #2488ff, #2ac3ff);
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        animation: pulse 2s infinite;
-        box-shadow: 0 0 30px rgba(42, 195, 255, 0.7);
       }
 
       @keyframes pulse {
@@ -435,23 +431,6 @@
 
       .requirement-text {
         font-size: 0.9rem;
-      }
-
-      .checkbox-group {
-        margin: 20px 0;
-        display: flex;
-        align-items: center;
-      }
-
-      .checkbox-group input {
-        width: 20px;
-        height: 20px;
-        margin-right: 10px;
-      }
-
-      .checkbox-group label {
-        color: #ffde00;
-        margin-bottom: 0;
       }
 
       .playstyle-container {
@@ -994,9 +973,13 @@
   </head>
 
   <body>
+    <!-- Fallback for Internet Explorer -->
+    <div class="ie-background"></div>
+
     <div id="video-container">
-      <video id="video-bg" loop muted playsinline>
+      <video id="video-bg" loop muted playsinline preload="metadata">
         <source src="./Resources/background.mp4" type="video/mp4" />
+        <source src="./Resources/background.webm" type="video/webm" />
         Your browser does not support the video tag.
       </video>
       <div class="video-overlay"></div>
@@ -1008,13 +991,6 @@
         Setting up Loading PC Sensitivity Experience . . .
       </div>
     </div>
-
-    <!-- Play Button -->
-    <!--<div class="play-overlay">
-      <div class="play-btn" id="playButton">
-        <i class="fas fa-play"></i>
-      </div>
-    </div> -->
 
     <!-- Decorative elements -->
     <div class="sharingan" style="top: 10%; left: 10%"></div>
@@ -2495,7 +2471,6 @@
       };
       const preloader = document.querySelector(".preloader");
       const playOverlay = document.querySelector(".play-overlay");
-      const playButton = document.getElementById("playButton");
       const video = document.getElementById("video-bg");
       const generateBtn = document.getElementById("generateBtn");
       //const Insta = document.getElementById("Insta");
@@ -2592,34 +2567,53 @@
       }
 
       // Video loading and playback management
-      window.addEventListener("load", function () {
+      window.addEventListener("DOMContentLoaded", function () {
         // Hide preloader after page load
-        setTimeout(() => {
+        const loadTimeout = setTimeout(() => {
           preloader.classList.add("hidden");
+        }, 3000);
 
+        if (video) {
           // Attempt to play video with sound
-          const playPromise = video.play();
+          video.addEventListener("loadeddata", function () {
+            clearTimeout(loadTimeout);
+            try {
+              // Try to play the video (muted)
+              const playPromise = video.play();
+              if (playPromise !== undefined) {
+                preloader.classList.add("hidden");
+              } else {
+                video
+                  .play()
+                  .then(() => {
+                    playOverlay.classList.add("hidden");
+                  })
+                  .catch((error) => {
+                    playOverlay.classList.add("hidden");
+                    console.log("Playback failed:", error);
+                    alert(
+                      "Please allow audio/video playback to enjoy the full experience"
+                    );
+                  });
+              }
+            } catch (e) {
+              console.log("Video autoplay blocked:", e);
+            }
+          });
 
-          if (playPromise !== undefined) {
-            playPromise.catch((error) => {
-              // Autoplay with sound was prevented
-              console.log("Autoplay prevented:", error);
-              playOverlay.classList.remove("hidden");
-            });
-          } else {
-            video
-              .play()
-              .then(() => {
-                playOverlay.classList.add("hidden");
-              })
-              .catch((error) => {
-                console.log("Playback failed:", error);
-                alert(
-                  "Please allow audio/video playback to enjoy the full experience"
-                );
-              });
-          }
-        }, 2000);
+          video.addEventListener("error", function () {
+            clearTimeout(loadTimeout);
+            preloader.classList.add("hidden");
+            console.error("Video loading failed");
+          });
+
+          // Load the video
+          video.load();
+        } else {
+          // If no video element, just hide preloader
+          clearTimeout(loadTimeout);
+          preloader.classList.add("hidden");
+        }
       });
 
       //Insta Button Event listener
