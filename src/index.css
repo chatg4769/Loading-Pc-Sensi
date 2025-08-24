@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Gaming Store Design System - Premium Gaming Aesthetics */
+@layer base {
+  :root {
+    /* Core Gaming Colors */
+    --background: 220 13% 8%;
+    --foreground: 210 40% 98%;
+    
+    /* Gaming Card System */
+    --card: 220 13% 12%;
+    --card-foreground: 210 40% 98%;
+    --card-hover: 220 13% 15%;
+    
+    /* Gaming Primary (Neon Cyan) */
+    --primary: 192 100% 50%;
+    --primary-foreground: 220 13% 8%;
+    --primary-glow: 192 100% 70%;
+    
+    /* Gaming Secondary (Electric Purple) */
+    --secondary: 271 76% 53%;
+    --secondary-foreground: 210 40% 98%;
+    --secondary-glow: 271 76% 73%;
+    
+    /* Gaming Accent (Neon Green) */
+    --accent: 120 100% 50%;
+    --accent-foreground: 220 13% 8%;
+    --accent-glow: 120 100% 70%;
+    
+    /* Gaming Tiers */
+    --tier-silver: 220 9% 75%;
+    --tier-gold: 43 96% 56%;
+    --tier-diamond: 201 96% 72%;
+    --tier-legendary: 291 100% 71%;
+    
+    /* Status Colors */
+    --success: 120 100% 50%;
+    --warning: 43 96% 56%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    
+    /* UI Elements */
+    --border: 220 13% 20%;
+    --input: 220 13% 15%;
+    --ring: 192 100% 50%;
+    --muted: 220 13% 15%;
+    --muted-foreground: 220 9% 46%;
+    
+    /* Gaming Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(192 100% 50%), hsl(271 76% 53%));
+    --gradient-secondary: linear-gradient(135deg, hsl(271 76% 53%), hsl(192 100% 50%));
+    --gradient-accent: linear-gradient(135deg, hsl(120 100% 50%), hsl(192 100% 50%));
+    --gradient-tier-silver: linear-gradient(135deg, hsl(220 9% 75%), hsl(220 9% 85%));
+    --gradient-tier-gold: linear-gradient(135deg, hsl(43 96% 56%), hsl(43 96% 66%));
+    --gradient-tier-diamond: linear-gradient(135deg, hsl(201 96% 72%), hsl(201 96% 82%));
+    --gradient-tier-legendary: linear-gradient(135deg, hsl(291 100% 71%), hsl(291 100% 81%));
+    
+    /* Gaming Effects */
+    --glow-primary: 0 0 20px hsl(192 100% 50% / 0.3);
+    --glow-secondary: 0 0 20px hsl(271 76% 53% / 0.3);
+    --glow-accent: 0 0 20px hsl(120 100% 50% / 0.3);
+    --shadow-gaming: 0 10px 30px -5px hsl(192 100% 50% / 0.2);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Orbitron', 'Exo 2', 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  
+  /* Gaming Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary);
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* Gaming Button Variants */
+  .btn-gaming {
+    @apply relative overflow-hidden font-semibold transition-all duration-300;
+    background: var(--gradient-primary);
+    box-shadow: var(--shadow-gaming);
+  }
+  
+  .btn-gaming:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glow-primary);
+  }
+  
+  .btn-tier-silver {
+    background: var(--gradient-tier-silver);
+    @apply text-gray-800;
+  }
+  
+  .btn-tier-gold {
+    background: var(--gradient-tier-gold);
+    @apply text-gray-800;
+  }
+  
+  .btn-tier-diamond {
+    background: var(--gradient-tier-diamond);
+    @apply text-gray-800;
+  }
+  
+  .btn-tier-legendary {
+    background: var(--gradient-tier-legendary);
+    @apply text-white;
+  }
+  
+  /* Gaming Card Effects */
+  .card-gaming {
+    @apply bg-card border border-border rounded-xl transition-all duration-300;
+    box-shadow: 0 4px 20px hsl(220 13% 8% / 0.3);
+  }
+  
+  .card-gaming:hover {
+    @apply bg-card-hover;
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-gaming);
+  }
+  
+  /* Tier Glow Effects */
+  .tier-silver { border-color: hsl(var(--tier-silver)); }
+  .tier-gold { border-color: hsl(var(--tier-gold)); }
+  .tier-diamond { border-color: hsl(var(--tier-diamond)); }
+  .tier-legendary { border-color: hsl(var(--tier-legendary)); }
+  
+  /* Gaming Text Effects */
+  .text-gaming-glow {
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.5);
+  }
+  
+  .text-tier-silver {
+    background: var(--gradient-tier-silver);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-tier-gold {
+    background: var(--gradient-tier-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-tier-diamond {
+    background: var(--gradient-tier-diamond);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-tier-legendary {
+    background: var(--gradient-tier-legendary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
